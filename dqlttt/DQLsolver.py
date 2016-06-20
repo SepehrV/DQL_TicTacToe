@@ -99,8 +99,9 @@ class dqlsolver(object):
         if numpy.random.rand() < self.epsilon:
             act = numpy.random.randint(self.action_space)
         else:
-            max_q = numpy.where(Q_vals == Q_vals.max())
-            act = max_q[0][0]
+            temp = Q_vals.flatten()
+            max_q = numpy.where(temp == temp.max())
+            act = int(max_q[0][0])
 
         #checking if the move is allowed or not.
         #if not, since it is a terminal move, we leave it to get handled later
@@ -119,7 +120,7 @@ class dqlsolver(object):
         """
         rewards = numpy.zeros(epochs)
         disp_freq = 1000
-        decay = 0.999
+        decay = 0.95
 
         print ("start of training")
         start_time = time.time()
@@ -134,11 +135,12 @@ class dqlsolver(object):
             rewards[epch] = reward
 
             if epch%disp_freq == 0 and epch >= disp_freq:
+                if self.epsilon*decay < 0.1:
+                    decay = 1.0
                 self.epsilon = self.epsilon*decay
                 print ("rewards at epoch %s is and epsiolon is %s:"%(epch, self.epsilon))
                 print (rewards[epch-disp_freq:epch].mean())
-                print ("%s epochs are done in %s"%(disp_freq, time.time()-start_time))
-                start_time = time.time()
+                print ("%s epochs are done in %s"%(epch, time.time()-start_time))
 
 
 
