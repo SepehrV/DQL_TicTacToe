@@ -10,6 +10,7 @@ from keras.optimizers import RMSprop
 from keras.utils import np_utils
 
 import numpy
+import time
 import pdb
 
 import TicTacToe
@@ -117,8 +118,11 @@ class dqlsolver(object):
         training a DQLsolver.
         """
         rewards = numpy.zeros(epochs)
-        disp_freq = 100
+        disp_freq = 1000
         decay = 0.999
+
+        print ("start of training")
+        start_time = time.time()
 
         for epch in range(epochs):
             #pdb.set_trace()
@@ -133,6 +137,8 @@ class dqlsolver(object):
                 self.epsilon = self.epsilon*decay
                 print ("rewards at epoch %s is and epsiolon is %s:"%(epch, self.epsilon))
                 print (rewards[epch-disp_freq:epch].mean())
+                print ("%s epochs are done in %s"%(disp_freq, time.time()-start_time))
+                start_time = time.time()
 
 
 

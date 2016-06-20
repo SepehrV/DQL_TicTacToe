@@ -223,7 +223,7 @@ class board(object):
                 elif self.state[i,j] == -1:
                     D.text(pos, 'o')
         del D
-        np_img = numpy.asarray(image)
+        np_img = numpy.asarray(image, dtype="float32")
 
         return np_img[:,:,0]/float(255)
 
