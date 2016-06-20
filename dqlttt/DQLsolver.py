@@ -22,6 +22,7 @@ class dqlsolver(object):
         Initializing the deep Q learning solver.
         """
         self.game = game
+        self.x_shape = self.game.boar.draw().shape
         self.action_space = self.game.board.state.size
         self.current_Q_vals = [0]*self.action_space
         self.epsilon = 1.0
@@ -29,10 +30,18 @@ class dqlsolver(object):
         self.game.agent_x.random_control = self.e_greedy_control
         self.model = self.init_model()
 
+        self.exp_count = 10000
+        self.exp_imgs = numpy.zeros((self.exp_count, self.x_shape[0], self.x_shape[1]))
+        self.exp_labels = numpy.zeros((self.exp_count, self.action_space.size))
+
 
     def init_model(self):
         """
         initilaizes the keras CNN networks.
+        the model is very simple:
+        CNN->RELU->CNN->RELU->POOL->FC->FC
+        it is being used for computing Q for all actions in a given state
+            simultanously.
         """
         img_rows = self.game.board.draw().shape[0]
         img_cols = self.game.board.draw().shape[1]
@@ -57,7 +66,17 @@ class dqlsolver(object):
         return model
 
 
+    #def experience_replay(self):
+
+
     def update_model(self, act, reward, is_terminal=False):
+        """
+        updates the model using belman equation.
+        act is being used to find the best Q for the next step and therefore computing the E(Q).
+        reward is +1 for win -1 for lose 0 for tie and -punish for making illegal move.
+            it is defined inside TicTacToe.
+        is_terminal flag indicates final move (win,lose,tie,illegal move)
+        """
         y = self.current_Q_vals
 
         if is_terminal:
@@ -73,6 +92,11 @@ class dqlsolver(object):
 
             #resetting to actual state
             self.game.board.change_state(self.game.agent_x, act, reset = True)
+
+        if self.exp_count > 0:
+            self.exp_count = self.exp_count -1
+            self.exp_imgs[self.exp_count] = self.current_img
+            self.exp_labels[self.exp_count] = y
 
 
         self.model.fit(self.current_img.reshape(1, 1, self.current_img.shape[0], self.current_img.shape[1]),
@@ -119,7 +143,7 @@ class dqlsolver(object):
         training a DQLsolver.
         """
         rewards = numpy.zeros(epochs)
-        disp_freq = 1000
+        disp_freq = 5000 # works as epilon update rate too
         decay = 0.95
 
         print ("start of training")

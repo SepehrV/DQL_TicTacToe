@@ -39,7 +39,7 @@ class game(object):
 
             except ValueError:
                 ## wrong move command
-                return -2
+                return -1
 
             if self.check_win() == 1:
                 #print ("x wins")
