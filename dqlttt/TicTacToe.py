@@ -30,10 +30,16 @@ class game(object):
 
     def run_main(self):
         while self.board.get_allowed_moves().sum() > 0:
-            if self.check_turn() == 1:
-                self.board.change_state(self.agent_x, self.agent_x.move())
-            elif self.check_turn() == -1:
-                self.board.change_state(self.agent_o, self.agent_o.move())
+            try:
+                if self.check_turn() == 1:
+                    self.board.change_state(self.agent_x, self.agent_x.move())
+
+                elif self.check_turn() == -1:
+                    self.board.change_state(self.agent_o, self.agent_o.move())
+
+            except ValueError:
+                ## wrong move command
+                return -2
 
             if self.check_win() == 1:
                 #print ("x wins")
@@ -158,7 +164,6 @@ class agent(object):
         if self.board.get_allowed_moves().sum() == 0:
             raise ValueError("move requested with no space left")
 
-        #pdb.set_trace()
         allowed = self.board.get_allowed_moves().flatten()
         sq =numpy.random.randint(allowed.sum()) + 1
         choose = numpy.zeros(allowed.size)
@@ -218,19 +223,24 @@ class board(object):
                 elif self.state[i,j] == -1:
                     D.text(pos, 'o')
         del D
+        np_img = numpy.asarray(image)
 
-        return numpy.asarray(image)
+        return np_img[:,:,0]/float(255)
 
-    def change_state(self, agent, play):
+
+    def change_state(self, agent, play, reset=False):
         """
         performs a move for agent given by play.
         """
         if type(play) is int:
             play = (play//self.shape[1], play%self.shape[1])
 
+        if reset:
+            self.state[play] = 0
+            return 1
+
         if self.state[play] != 0:
-           print ("%s is taken. select another spot!"%str(play))
-           return -1
+            raise ValueError("place is taken!")
 
         if agent.name == 'x':
            self.state[play] = 1
@@ -251,6 +261,7 @@ class board(object):
         return all allowed moves
         """
         return self.state == 0
+
 
     def set_state(self, state):
         """

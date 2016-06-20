@@ -6,5 +6,6 @@ setup(name='dqlttt',
       author='Sepehr Valipour',
       author_email='valipour@ualberta.ca',
       license='MIT',
+      install_requires=['keras'],
       packages=['dqlttt'],
       zip_safe=False)
