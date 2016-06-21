@@ -107,11 +107,11 @@ class dqlsolver(object):
         #storing transitions for experinece replay
         self.memory.append([self.current_img, act, reward, next_img])
 
-        self.model.fit(self.current_img.reshape(1, 1, self.current_img.shape[0], self.current_img.shape[1]),
-                y,
-                batch_size=1,
-                nb_epoch=1,
-                verbose=0)
+        #self.model.fit(self.current_img.reshape(1, 1, self.current_img.shape[0], self.current_img.shape[1]),
+        #        y,
+        #        batch_size=1,
+        #        nb_epoch=1,
+        #        verbose=0)
 
 
     def e_greedy_control(self):
@@ -156,7 +156,7 @@ class dqlsolver(object):
         disp_freq = 2000
         decay = 0.95
         # does one replay train each replay_freq episodes
-        replay_freq = 50
+        replay_freq = 1
 
         print ("start of training")
         start_time = time.time()
@@ -207,9 +207,8 @@ class dqlsolver(object):
                 if self.epsilon*decay < 0.1:
                     decay = 1.0
                 self.epsilon = self.epsilon*decay
-                print ("rewards at epoch %s is and epsiolon is %s:"%(epch, self.epsilon))
-                f.write("rewards at epoch %s is and epsiolon is %s:"%(epch, self.epsilon))
-                print (rewards[epch-disp_freq:epch].mean())
+                print ("rewards at epoch %s is %s and epsiolon is %s:"%(epch,rewards[epch-disp_freq:epch].mean(), self.epsilon))
+                f.write("rewards at epoch %s is %s  and epsiolon is %s\n:"%(epch,rewards[epch-disp_freq:epch].mean(), self.epsilon))
                 print ("%s epochs are done in %s"%(epch, time.time()-start_time))
         f.close()
 
