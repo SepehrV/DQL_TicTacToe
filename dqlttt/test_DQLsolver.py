@@ -6,4 +6,5 @@ import numpy
 game =TicTacToe.game()
 solver = dqlsolver(game)
 solver.train()
+#solver.test()
 

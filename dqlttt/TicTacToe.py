@@ -54,7 +54,6 @@ class game(object):
                 return -1
 
             if self.check_win() == 0:
-                pdb.set_trace()
                 #print ("tie")
                 #plt.imshow(self.board.draw())
                 #plt.show()
