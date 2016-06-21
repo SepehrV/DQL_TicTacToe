@@ -146,7 +146,7 @@ class dqlsolver(object):
         return act
 
 
-    def train(self, epochs = 1000000):
+    def train(self, epochs = 100000):
         """
         training a DQLsolver.
         """
@@ -257,7 +257,6 @@ class dqlsolver(object):
         agent controller during testing
         """
 
-        pdb.set_trace()
         img = self.game.board.draw()
         self.current_img = img
 
@@ -268,7 +267,7 @@ class dqlsolver(object):
         max_q = numpy.where(temp == temp.max())
         act = int(max_q[0][0])
         self.last_act = act
-        print(act)
+        #print(act)
 
         return act
 

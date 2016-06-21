@@ -35,12 +35,14 @@ class game(object):
                     self.board.change_state(self.agent_x, self.agent_x.move())
 
                 elif self.check_turn() == -1:
-                    self.board.change_state(self.agent_o, self.agent_o.move())
+                    self.board.change_state(self.agent_o, self.agent_o.move(control='human'))
 
             except ValueError:
                 ## wrong move command
                 return -1
 
+            plt.imshow(self.board.draw())
+            plt.show()
             if self.check_win() == 1:
                 #print ("x wins")
                 #plt.imshow(self.board.draw())
@@ -151,7 +153,7 @@ class agent(object):
         """
         gets two input from human for row and column of the square in the board
         """
-        ("select a square from (0,0) to %s \n"%(board.state.shape))
+        ("select a square from (0,0) to %s \n"%(str(self.board.state.shape)))
         row = input("enter row\n")
         col = input("enter col\n")
         return (row,col)
