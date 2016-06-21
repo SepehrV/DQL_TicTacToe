@@ -54,6 +54,7 @@ class game(object):
                 return -1
 
             if self.check_win() == 0:
+                pdb.set_trace()
                 #print ("tie")
                 #plt.imshow(self.board.draw())
                 #plt.show()
@@ -115,7 +116,7 @@ class game(object):
 
                     if (self.board.state[i:m,i:n]*f).sum() == -self.win_rule:
                         points_o = points_o + 1
-        if points_x == points_o and numpy.where(self.board.state ==0) is None:
+        if points_x == points_o and self.board.get_allowed_moves().sum() == 0:
             return 0
         if points_x >= self.win_cond:
             return 1

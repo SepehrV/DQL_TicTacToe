@@ -22,7 +22,7 @@ class dqlsolver(object):
         Initializing the deep Q learning solver.
         """
         self.game = game
-        self.x_shape = self.game.boar.draw().shape
+        self.x_shape = self.game.board.draw().shape
         self.action_space = self.game.board.state.size
         self.current_Q_vals = [0]*self.action_space
         self.epsilon = 1.0
@@ -30,9 +30,9 @@ class dqlsolver(object):
         self.game.agent_x.random_control = self.e_greedy_control
         self.model = self.init_model()
 
-        self.exp_count = 10000
+        self.exp_count = 100
         self.exp_imgs = numpy.zeros((self.exp_count, self.x_shape[0], self.x_shape[1]))
-        self.exp_labels = numpy.zeros((self.exp_count, self.action_space.size))
+        self.exp_labels = numpy.zeros((self.exp_count, self.action_space))
 
 
     def init_model(self):
@@ -142,8 +142,9 @@ class dqlsolver(object):
         """
         training a DQLsolver.
         """
+        epochs = self.exp_count
         rewards = numpy.zeros(epochs)
-        disp_freq = 5000 # works as epilon update rate too
+        disp_freq = 1 # works as epilon update rate too
         decay = 0.95
 
         print ("start of training")
@@ -165,6 +166,15 @@ class dqlsolver(object):
                 print ("rewards at epoch %s is and epsiolon is %s:"%(epch, self.epsilon))
                 print (rewards[epch-disp_freq:epch].mean())
                 print ("%s epochs are done in %s"%(epch, time.time()-start_time))
+
+        pdb.set_trace()
+        epochs = 10 # replay training
+        self.exp_count = self.exp_imgs.shape[0]
+        x = self.exp_imgs.reshape(self.exp_count, 1, self.x_shape[0], self.x_shape[1])
+        self.model.fit(x, self.exp_labels, batch_size=32, nb_epoch=epochs, verbose=1)
+
+
+
 
 
 
