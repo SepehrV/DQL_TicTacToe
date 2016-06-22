@@ -27,7 +27,7 @@ To train your own Deep Q learning based agent:
 python examples/test_DQLsolver.py train
 ```
 
-To train a Monte Carlo base agent:
+To train a Monte Carlo based agent:
 ```bash
 python examples/test_DQLsolver.py train
 ```
