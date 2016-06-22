@@ -11,26 +11,26 @@ The package includes:
 The package requires keras. So if you don't want to install, make sure that you have [keras](https://github.com/fchollet/keras).
 
 To install:
-'''bash
+```bash
 git clone https://github.com/SepehrV/DQL_TicTacToe
 cd DQL_TicTacToe
 sudo python setup.py install
-'''
+```
 
 ##Usage
 To play against a trained model using Deep Q learning:
-'''bash
+```bash
 python examples/test_DQLsolver.py test --keras-model models/model.json --keras-weights models/model_weights.h5
-'''
+```
 
 To train your own Deep Q learning based agent:
-'''bash
+```bash
 python examples/test_DQLsolver.py train
-'''
+```
 
 To train a Monte Carlo base agent:
-'''bash
+```bash
 python examples/test_DQLsolver.py train
-'''
+```
 
 
