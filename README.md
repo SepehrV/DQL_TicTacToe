@@ -2,9 +2,12 @@
 
 This simple example of Deep Q leanrning is inspired by [Playing Atari with Deep Reinforcement Learning](https://www.cs.toronto.edu/~vmnih/docs/dqn.pdf). It is meant to be basic so it would be easy to see and modify the main algorithm. 
 
-The package includes: 
+The package includes:
+ 
 1. A Deep Q learning solver for playing graphical Tic-Tac-Toe (the agent only sees an image of the board and does not have access to the internal state of the game.)
+
 2. A Monte Carlo based Q learning solver for playing Tic-Tac-Toe. (agent works on game's internal state space )
+
 3. An implementation for Tic-Tac-Toe game. 
 
 ##Install
