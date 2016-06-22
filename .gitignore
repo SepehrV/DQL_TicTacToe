@@ -1,10 +1,6 @@
 #compiled modules
 *.pyc
 
-#saved models
-*.json
-*.h5
-
 #ignore log files
 *log
 # Setuptools distribution folder.

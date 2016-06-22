@@ -118,8 +118,6 @@ class mcsolver (object):
         for epch in range(epochs):
             r = numpy.random.randint(m)
             self.game.board.set_state(self.states[r])
-            #self.game.board.set_state([0,0,0,0,0,0,0,0,0])
-            #starting_player = self.game.check_turn()
             result = self.game.run_main()
             reward = result #* starting_player
             rewards[epch] = reward
@@ -127,12 +125,8 @@ class mcsolver (object):
             self.s_a_series = []
             if epch%disp_freq == 0 and epch >= disp_freq:
                 self.epsilon = self.epsilon*decay
-                print ("rewards at epoch %s is and epsiolon is %s:"%(epch,self.epsilon))
-                print (rewards[epch-disp_freq:epch].mean())
+                print ("rewards at epoch %s is %s and epsiolon is %s:"%(epch,rewards[epch-disp_freq:epch].mean(), self.epsilon))
 
-
-            #plt.imshow(self.game.board.draw())
-            #plt.show()
         pdb.set_trace()
 
 

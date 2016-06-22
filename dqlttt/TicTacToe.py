@@ -28,37 +28,49 @@ class game(object):
         self.create_filters()
 
 
-    def run_main(self):
+    def run_main(self, show=False):
+        """
+        runs the game for a full episode and returns the reward of the game after finished.
+        in case of show = True, works in an interactive mode.
+        """
+
+        if show:
+            plt.ion()
+
         while self.board.get_allowed_moves().sum() > 0:
+            if show:
+                plt.imshow(self.board.draw())
             try:
                 if self.check_turn() == 1:
+                    if show:
+                        print ("x moves")
                     self.board.change_state(self.agent_x, self.agent_x.move())
 
                 elif self.check_turn() == -1:
-                    self.board.change_state(self.agent_o, self.agent_o.move(control='human'))
+                    if show:
+                        print ("o moves")
+                    self.board.change_state(self.agent_o, self.agent_o.move())
 
             except ValueError:
                 ## wrong move command
+                if show:
+                    print ("illegal move. End of episode.\n\n")
                 return -1
 
-            plt.imshow(self.board.draw())
-            plt.show()
+
             if self.check_win() == 1:
-                #print ("x wins")
-                #plt.imshow(self.board.draw())
-                #plt.show()
+                if show:
+                    print ("x wins. End of episode.\n\n")
                 return 1
 
             if self.check_win() == -1:
-                #print ("o wins")
-                #plt.imshow(self.board.draw())
-                #plt.show()
+                if show:
+                    print ("o wins. End of episode.\n\n")
                 return -1
 
             if self.check_win() == 0:
-                #print ("tie")
-                #plt.imshow(self.board.draw())
-                #plt.show()
+                if show:
+                    print ("tie. End of episode.\n\n")
                 return 0
         return 0
 
@@ -130,23 +142,30 @@ class agent(object):
     agent class.
     making moves.
     """
-    def __init__(self, name, board):
+    def __init__(self, name, board, control_type='random'):
         """
         Init an agent with name (x or o)
         """
         assert (name in ('x', 'o')),"name for an agent is not acceptatble!"
         self.name = name
         self.board = board
+        self.control_type = control_type
 
 
-    def move(self, control='random'):
+    def move(self):
         """
-        makes a move based on given control
+        makes a move based on given control type
         """
-        if control == 'human':
+        if self.control_type == 'human':
             return self.human_control()
-        if control == 'random':
+        if self.control_type == 'random':
             return self.random_control()
+        if self.control_type == 'intelligent':
+            return self.intelligent_control()
+
+
+    def set_control_type(self,control_type):
+        self.control_type = control_type
 
 
     def human_control(self):

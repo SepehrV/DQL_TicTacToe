@@ -12,7 +12,6 @@ from keras.utils import np_utils
 
 import numpy
 import time
-import pdb
 import random
 import matplotlib.pyplot as plt
 
@@ -163,7 +162,6 @@ class dqlsolver(object):
         mini_batch_size = 32
 
         for epch in range(epochs):
-            #pdb.set_trace()
             self.game.board.set_state([0,0,0,0,0,0,0,0,0])
 
             result = self.game.run_main()
@@ -216,36 +214,24 @@ class dqlsolver(object):
         self.model.save_weights('model_weights.h5')
 
 
-        #epochs = 5# replay training
-        #self.exp_count = self.exp_imgs.shape[0]
-        #x = self.exp_imgs.reshape(self.exp_count, 1, self.x_shape[0], self.x_shape[1])
-        #self.model.fit(x, self.exp_labels, batch_size=32, nb_epoch=epochs, verbose=1)
-        #f = open("model",'w')
-        #pdb.set_trace()
-        #f.write(self.model.to_json())
-        #f.close()
-        #self.model.save_weights('model_weights.h5')
-
-
-    def test(self):
+    def test(self, model_path, weight_path):
         """
         test function.
         loads the model
         replaces e_greedy_control with test control
         runs test epochs.
         """
-        model_path = "model.json"
-        weight_path = "model_weights.h5"
+        #model_path = "model.json"
+        #weight_path = "model_weights.h5"
         self.load_model(model_path, weight_path)
         self.game.agent_x.random_control = self.test_control
 
         test_epochs = 500
         rewards = numpy.zeros(test_epochs)
         for epch in range(test_epochs):
-            #pdb.set_trace()
             self.game.board.set_state([0,0,0,0,0,0,0,0,0])
 
-            result = self.game.run_main()
+            result = self.game.run_main(show=True)
             reward = result #* starting_player
             rewards[epch] = reward
 
@@ -267,7 +253,6 @@ class dqlsolver(object):
         max_q = numpy.where(temp == temp.max())
         act = int(max_q[0][0])
         self.last_act = act
-        #print(act)
 
         return act
 
