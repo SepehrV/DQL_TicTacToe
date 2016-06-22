@@ -8,14 +8,13 @@ The package includes:
 3. An implementation for Tic-Tac-Toe game. 
 
 ##Install
-This package requires [keras](https://github.com/fchollet/keras).
-
 To install:
 ```bash
 git clone https://github.com/SepehrV/DQL_TicTacToe
 cd DQL_TicTacToe
 sudo python setup.py install
 ```
+This package requires [keras](https://github.com/fchollet/keras).
 
 ##Usage
 To play against a trained model using Deep Q learning:
