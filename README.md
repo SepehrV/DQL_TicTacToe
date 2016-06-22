@@ -8,7 +8,7 @@ The package includes:
 3. An implementation for Tic-Tac-Toe game. 
 
 ##Install
-The package requires keras. So if you don't want to install, make sure that you have [keras](https://github.com/fchollet/keras).
+This package requires [keras](https://github.com/fchollet/keras).
 
 To install:
 ```bash
